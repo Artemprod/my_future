@@ -62,7 +62,6 @@ async def processed_load_image_file(message: Message, bot: Bot, openai_client: A
         text=response,
         parse_mode="MARKDOWN"
     )
-
     await message.answer(text=random.choice(next_nav))
 
 

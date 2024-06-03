@@ -1,12 +1,12 @@
-import asyncio
-from pathlib import Path
-
 from openai import AsyncOpenAI
 
-from utils.encode_media import encode_image
 
 
-async def get_response_image_file(image, client: AsyncOpenAI, system_prompt, user_prompt, temperature=1.0,
+async def get_response_image_file(image, client: AsyncOpenAI, system_prompt, user_prompt, temperature=1.8,
+
+                                  top_p=0.9,
+                                  presence_penalty=0.9,
+                                  frequency_penalty=0.9,
                                   model="gpt-4o"):
     answer = await client.chat.completions.create(
         model=model,
@@ -20,13 +20,17 @@ async def get_response_image_file(image, client: AsyncOpenAI, system_prompt, use
                  }
             ]}
         ],
+        max_tokens=1000,
         temperature=temperature,
+        top_p=top_p,
+        presence_penalty=presence_penalty,
+        frequency_penalty =frequency_penalty
 
     )
     return answer.choices[0].message.content
 
 
-async def get_response_image_url(client: AsyncOpenAI, image_url, system_prompt, user_prompt, temperature=0.0,
+async def get_response_image_url(client: AsyncOpenAI, image_url, system_prompt, user_prompt, temperature=1.0,
                                  model="gpt-4o"):
     response = await client.chat.completions.create(
         model=model,
@@ -40,8 +44,3 @@ async def get_response_image_url(client: AsyncOpenAI, image_url, system_prompt, 
         temperature=temperature,
     )
     return response.choices[0].message.content
-
-
-
-
-
